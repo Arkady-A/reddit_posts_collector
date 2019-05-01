@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-import json
-import requests as req
-import requests_oauthlib as req_o
-
 from requests.auth import HTTPBasicAuth
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
@@ -28,41 +23,3 @@ class Collector():
                                 params={'limit':limit})
 
 
-        
-#user = credentials['user']
-#password = credentials['pass']
-#code = credentials['code']
-#redirect_uri = credentials['redirect_uri']
-#user_agent = credentials['user-agent']
-#
-#client_id = credentials['client_id']
-#client_secret = credentials['client_secret']
-#
-#client_auth = req.auth.HTTPBasicAuth(client_id, client_secret)
-#
-#response = req.post(url="https://www.reddit.com/api/v1/access_token",
-#    headers = {'User-agent': user_agent},
-#    params={
-#    "grant_type": "authorization_code",
-#    "code": code,
-#    "redirect_uri": redirect_uri
-#  },
-#  timeout=2.2,
-#  auth = client_auth
-#)
-#print(response.json())
-#access_token = response.json()['access_token']
-#url = 'https://oauth.reddit.com/'
-#
-##test section# 
-#
-#url_interested = url[:-1]+'/r/progresspics/hot'
-#
-#response = req.get(url_interested,
-#                   headers={"Authorization": "bearer " + access_token,
-#                            "user-agent":user_agent,},
-#params={'raw_json':1,'limit':7,}
-#                   )
-#with open('test.json', 'w') as file:
-#    file.write(json.dumps(response.json(), indent=4, sort_keys=True))
-#print(list(response.json()['data']))
