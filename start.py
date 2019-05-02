@@ -16,6 +16,7 @@ scope = 'read'
 
 colle = Collector(client_id, client_secret, user_agent, scope)
 
+# for the time being I only collect 5 reddit posts
 response = colle.get_reddit_posts(5, 'progresspics')
 proc = Processor()
 data = proc.process_data(response.json()['data']['children'])
