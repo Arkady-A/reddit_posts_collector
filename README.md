@@ -1,8 +1,8 @@
-###Reddit Posts Collector
+### Reddit Posts Collector
 
 Script that collecting posts from a subreddit.
 
-###How does it work?
+### How does it work?
 
 1. Creating Oauth2 session
 2. Collecting data through [reddit api](https://www.reddit.com/dev/api/ "reddit api ")
