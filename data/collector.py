@@ -8,6 +8,9 @@ import numpy as np
 
 class Collector():
     def make_oath_session(self, client_id, client_secret, user_agent):
+        '''
+        Makes oath session
+        '''
         auth = HTTPBasicAuth(client_id, client_secret)
         client = BackendApplicationClient(client_id=client_id)
         self.session = OAuth2Session(client=client, )
@@ -22,7 +25,23 @@ class Collector():
                                )
         print(self.session, self.token.values())
     
-    def get_reddit_posts(self, limit, subreddit ,after=None):
+    def get_reddit_posts(self, subreddit, limit, after=None):
+        '''
+        Get subreddit's posts
+        Parameters
+        ----------
+        subreddit: str
+            name of subreddit
+        limit: int
+            How much post to download
+        after : str
+            reddit's post id from which to start
+        
+        Returns
+        -------
+        dict
+            converted to python's dictionary json response
+        '''
         return self.session.get(
                 'https://oauth.reddit.com/r/{}/new'.format(subreddit),
                 params={'limit':limit, 'raw_json':1})
