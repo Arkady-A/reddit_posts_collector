@@ -1,9 +1,9 @@
 class Post():
     
     def __str__(self):
-        return '[{}] {}'.format(self.post_id,self.title)
+        return '[{}] {}'.format(self.id_post,self.title)
     
-    def __init__(self, post_id, title, image_location):
-        self.post_id = post_id
+    def __init__(self, id_post, title, image_location):
+        self.id_post = id_post
         self.image_location = image_location
         self.title = title

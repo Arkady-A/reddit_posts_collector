@@ -2,7 +2,7 @@
 import json
 import data 
 from data.collector import Collector
-from data.processor import Processor
+from data.processor import Post_process
 
 credentials = json.load(open('creden.json')) #temporary solution
 code = credentials['code']
@@ -17,6 +17,5 @@ scope = 'read'
 colle = Collector(client_id, client_secret, user_agent, scope)
 
 # for the time being I only collect 5 reddit posts
-response = colle.get_reddit_posts(5, 'progresspics')
-proc = Processor()
-data = proc.process_data(response.json()['data']['children'])
+response = colle.get_reddit_posts('progresspics', 5)
+data = Post_process.process_data(response.json()['data']['children'])
