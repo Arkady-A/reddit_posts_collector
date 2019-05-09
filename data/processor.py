@@ -1,5 +1,6 @@
 from .models import Post
 import pandas as pd 
+import re
 
 class Post_process():
     @staticmethod
@@ -25,7 +26,8 @@ class Post_process():
                     title = post_data['title']
                     source_image = images[0]['source']
                     processed_posts_list.append(Post(id_post, title, source_image))
-        return processed_posts_list
+        last_id = posts[-1]['data']['name']
+        return processed_posts_list,last_id
     @staticmethod
     def to_dataframe(list_of_posts):
         '''
@@ -39,3 +41,30 @@ class Post_process():
     
     def __init__(self):
         pass
+
+class Processpics_process():
+    @staticmethod
+    def parse_factory(regex = [r'(.)/(.{1,2})/(.*)\[(.*)>(.*)=',
+                               r'(.)/(.{1,2})/(.*)\[(.*)>(.*)>',
+                               r'(.)/(.{1,2})/(.*)\[(.*)[<>](.*)]',
+                               ]):
+        def parse_data(row):
+
+            grp = re.match(regex[0], row.title)
+            if grp is None:
+                for reg in regex:
+                    grp = re.match(reg, row.title)
+                    if grp is not None:
+                        break
+            try:
+                row.loc['gender'] = grp.group(1)
+                row.loc['age'] = grp.group(2)
+                row.loc['height'] = grp.group(3)
+                row.loc['weight_before'] = grp.group(4)
+                row.loc['weight_after'] = grp.group(5)
+            except AttributeError as e:
+                print(e)
+                print(row.title[:40])
+            return row
+        return parse_data 
+            

@@ -15,6 +15,7 @@ class Collector():
         client = BackendApplicationClient(client_id=client_id)
         self.session = OAuth2Session(client=client, )
         self.session.headers['User-Agent'] = user_agent
+        self.time_of_data_req = time.time()
         self.token = self.session.fetch_token(
                 token_url='https://www.reddit.com/api/v1/access_token',
                 auth=auth, )  
@@ -42,9 +43,16 @@ class Collector():
         dict
             converted to python's dictionary json response
         '''
+        parameters = {'limit':limit, 'raw_json':1}
+        if after is not None:
+            parameters['after']=after
+        time_diff = time.time() - self.time_of_data_req
+        if time_diff<1:
+            time.sleep(1-time_diff+0.01)
+        self.time_of_data_req = time.time()
         return self.session.get(
                 'https://oauth.reddit.com/r/{}/new'.format(subreddit),
-                params={'limit':limit, 'raw_json':1})
+                params=parameters)
 
 
     def get_images(self, list_of_urls, list_of_names, filepath):
