@@ -1,6 +1,8 @@
 from .models import Post
 import pandas as pd 
 import re
+import cv2
+import sys
 
 class Post_process():
     @staticmethod
@@ -25,7 +27,8 @@ class Post_process():
                     id_post = post_data['name']
                     title = post_data['title']
                     source_image = images[0]['source']
-                    processed_posts_list.append(Post(id_post, title, source_image))
+                    processed_posts_list.append(Post(id_post, title, 
+                                                     source_image))
         last_id = posts[-1]['data']['name']
         return processed_posts_list,last_id
     @staticmethod
@@ -43,6 +46,36 @@ class Post_process():
         pass
 
 class Processpics_process():
+
+    @staticmethod
+    def detect_faces(image):
+        '''
+        This function returns images of detected faces if any
+        Parameters
+        ----------
+        image : file
+            an image in which to find a face
+        
+        Returns
+        -------
+        faces : list of lists  [x,y,w,h]
+        
+        None
+        '''
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # TO RUN THE LINE BELOW YOU NEED TO PLACE 
+        # haarcascade_frontalface_default.xml
+        # IN THE FOLDER WITH start.py FILE
+        faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+        faces = faceCascade.detectMultiScale(
+            gray,
+            scaleFactor=1.3,
+            minNeighbors=3,
+            minSize=(30, 30)
+        )
+        return faces
+    #TODO
+    # ADD DOCUMENTATION        
     @staticmethod
     def parse_factory(regex = [r'(.)/(.{1,2})/(.*)\[(.*)>(.*)=',
                                r'(.)/(.{1,2})/(.*)\[(.*)>(.*)>',
@@ -62,9 +95,10 @@ class Processpics_process():
                 row.loc['height'] = grp.group(3)
                 row.loc['weight_before'] = grp.group(4)
                 row.loc['weight_after'] = grp.group(5)
+                row.loc['stripped_title'] = row.title[:60]
             except AttributeError as e:
                 print(e)
-                print(row.title[:40])
+                print(row.title[:80])
             return row
         return parse_data 
             
